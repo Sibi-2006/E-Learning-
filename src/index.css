@@ -1,13 +1,91 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html{
+    @apply bg-dark
+}
+.forms{
+    @apply flex justify-center items-center flex-col p-3 bg-primary  gap-3 border-secondary rounded-xl w-11/12 md:w-3/12;
+    box-shadow: 3px 3px 10px rgb(139, 92, 246);
+}
+.form-inputs{
+    @apply text-dark text-sm md:text-xl border-2 border-secondary outline-none rounded-md px-3 w-11/12 h-12 md:h-14 placeholder-dark;
+}.form-inputs:focus{
+    @apply bg-secondary text-dark;
+}
+.forms-btn{
+    @apply bg-dark text-primaryText text-xl md:text-2xl border border-secondary py-2 px-4 rounded-xl ;
+}.forms-btn:hover,:focus{
+    @apply bg-secondary text-dark border-dark border;
+    box-shadow: 2px 2px 8px rgb(30,27,75);
+}
+.form-title{
+    @apply text-primaryText text-xl md:text-2xl font-bold ;
+}
+.errors{
+    @apply text-red-500 font-bold
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.primary-btn{
+    @apply bg-purple-200 text-purple-500 py-1 px-5 text-sm md:text-2xl rounded-2xl ;
+}.primary-btn:hover,:focus{
+    @apply bg-purple-500 text-purple-200;
+    transition: .5s;
+}
+/* home */
+.home-title{
+    @apply text-5xl md:text-7xl font-bold text-primaryText ;
+    text-shadow: 3px 3px 10px rgb(165 180 252);
+}
+/* All course */
+.con{
+    @apply bg-black  rounded-2xl p-2 border-2  w-11/12 md:w-1/2 flex items-center justify-center flex-col mb-5 ;
+}
+.html-con{
+    @apply  text-orange-500  border-orange-500 ;
+    box-shadow: 3px 3px 10px orangered;
+}
+.html-btn{
+    @apply bg-orange-500 my-3 px-4 py-2 border-dark border-2 text-orange-950 rounded-xl ;
+}.html-btn:hover,:focus{
+    @apply bg-black border-orange-500 text-orange-500;
+}
+.allCourse-con{
+    @apply flex gap-10 items-center justify-between mb-10;
+}
+.allCourse-img{
+    @apply h-72 w-80 md:w-96 md:h-80 rounded-2xl
+}
+
+.css-con{
+    @apply text-blue-400 border-blue-400;
+    box-shadow: 3px 3px 10px rgb(96 165 250);
+}
+.css-btn{
+    @apply bg-blue-400 text-blue-950 py-2 px-4 rounded-xl my-3 border-dark border-2;
+}.css-btn:hover,:focus{
+    @apply bg-black border-blue-400 text-blue-400;
+}
+
+.javascript-con{
+    @apply text-yellow-400 border-yellow-400 border-2;
+    box-shadow: 3px 3px 10px rgb(250, 204, 21);
+}
+.javascript-btn{
+    @apply bg-yellow-400 text-yellow-900 py-2 px-4 rounded-xl my-3 border-dark border-2;
+}
+.javascript-btn:hover,:focus{
+    @apply bg-black border-yellow-400 text-yellow-400;
+}
+
+.mern-con{
+    @apply text-green-400 border-2 border-green-400;
+    box-shadow: 3px 3px 10px rgb(74 222 128);
+}
+.mern-btn{
+    @apply bg-green-400 text-green-950 my-3 py-2 px-4 rounded-xl border-2 border-dark;
+}
+.mern-btn:hover,:focus{
+    @apply bg-black text-green-400 border-green-400;
 }
