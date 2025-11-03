@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { VariableContext } from "../Context/Variable"
 export default function AdminLogin() {
   const [admin, setAdmin] = useState({
     adminId: "",
@@ -11,14 +12,16 @@ export default function AdminLogin() {
   const handleChange = (e) => {
     setAdmin({ ...admin, [e.target.name]: e.target.value });
   };
-
-  const handleSubmit = (e) => {
+  const { baseUrl } = useContext(VariableContext);
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
-   if (admin.adminId === process.env.ADMIN_ID && admin.password  === process.env.ADMIN_PASS) {
-      navigate("/admin/home"); 
-    } else {
-      setMessage("Invalid Admin ID or Password ❌");
+    try{
+        const res = await axios.post(`${baseUrl}/admin/login`,admin);
+        if (res.data.success) navigate("/admin/home");
+        else setMessage(res.data.message);
+    }catch(err){
+      console.log(err.message)
     }
   };
 

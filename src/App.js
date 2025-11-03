@@ -5,6 +5,7 @@ import Log_in from "./Components/Log_in";
 import Home from "./Components/Home";
 import AdminLogin from "./Adminpage/AdminLogin";
 import AdminHome from "./Adminpage/AdminHome";
+import Html from "./Adminpage/Html";
 function App() {
   return (
     <div className="">
@@ -18,6 +19,7 @@ function App() {
           {/*For Admin  */}
           <Route path="/admin" element={ <AdminLogin />} />
           <Route path="/admin/home" element={ <AdminHome />} />
+          <Route path="/admin/home/:name" element={ <Html />} />
         </Routes>
       </BrowserRouter>
     </div>
