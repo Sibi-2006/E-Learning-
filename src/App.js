@@ -6,6 +6,7 @@ import Home from "./Components/Home";
 import AdminLogin from "./Adminpage/AdminLogin";
 import AdminHome from "./Adminpage/AdminHome";
 import Html from "./Adminpage/Html";
+import HtmlCourse from "./Components/Course/HtmlCourse";
 function App() {
   return (
     <div className="">
@@ -20,6 +21,9 @@ function App() {
           <Route path="/admin" element={ <AdminLogin />} />
           <Route path="/admin/home" element={ <AdminHome />} />
           <Route path="/admin/home/:name" element={ <Html />} />
+
+          {/*Course */}
+          <Route path="/html" element={ <HtmlCourse/>} />
         </Routes>
       </BrowserRouter>
     </div>
