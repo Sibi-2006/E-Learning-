@@ -3,6 +3,7 @@ import HTML from "./images/htmlImg.png"
 import CSS from "./images/cssImg.png"
 import JS from "./images/jsImg.png"
 import MERN from "./images/MERN.webp"
+import { useNavigate } from 'react-router-dom'
 const courses = [
   { 
     title: "HTML", 
@@ -35,6 +36,7 @@ const courses = [
 ];
 
 export default function AllCourse() {
+  const navigator = useNavigate();
   return (
     <div>
       {courses.map((course, index) => (
@@ -46,7 +48,9 @@ export default function AllCourse() {
           <div className={`${course.title.toLowerCase()}-con con max-w-lg`}>
             <h1 className="text-4xl font-bold mb-4">{course.title}</h1>
             <p className="text-lg text-secondaryText">{course.desc}</p>
-            <button className={`${course.title.toLocaleLowerCase()}-btn`}>Learn {course.title} ➪ </button>
+            <button className={`${course.title.toLocaleLowerCase()}-btn`}
+              onClick={()=>navigator(`/learncourse/${course.title.toLowerCase()}`)}
+            >Learn {course.title} ➪ </button>
           </div>
           <div>
             <img 

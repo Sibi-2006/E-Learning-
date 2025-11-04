@@ -23,7 +23,7 @@ function App() {
           <Route path="/admin/home/:name" element={ <Html />} />
 
           {/*Course */}
-          <Route path="/html" element={ <HtmlCourse/>} />
+          <Route path="/learncourse/:coueseName" element={ <HtmlCourse/>} />
         </Routes>
       </BrowserRouter>
     </div>

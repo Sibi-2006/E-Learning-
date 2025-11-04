@@ -102,3 +102,25 @@ html{
 .add-btn:hover,:focus{
     @apply bg-dark text-primaryText
 }
+
+.html-title{
+    @apply text-orange-400;
+    text-shadow: 2px 2px 5px rgb(255, 231, 185);
+}
+.html-font{
+    @apply text-orange-400;
+}
+.html-sub{
+    @apply text-orange-300
+}
+
+.css-title{
+    @apply text-blue-400;
+    text-shadow: 2px 2px 5px rgb(138, 218, 255);
+}
+.css-font{
+    @apply text-blue-400;
+}
+.css-sub{
+    @apply text-blue-300
+}
