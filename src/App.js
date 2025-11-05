@@ -8,6 +8,7 @@ import AdminHome from "./Adminpage/AdminHome";
 import Html from "./Adminpage/Html";
 import HtmlCourse from "./Components/Course/HtmlCourse";
 import AddQuiz from "./Adminpage/AddQuiz";
+import Quiz from "./Components/Quiz";
 function App() {
   return (
     <div className="">
@@ -26,6 +27,7 @@ function App() {
 
           {/*Course */}
           <Route path="/learncourse/:coueseName" element={ <HtmlCourse/>} />
+          <Route path="/quiz" element={ <Quiz />} />
         </Routes>
       </BrowserRouter>
     </div>
