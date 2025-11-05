@@ -27,6 +27,12 @@ export default function AdminHome() {
           <button
              className='mern-btn w-1/2'
             >MERN</button>
+
+            <button
+              className='css-btn w-1/2'
+            >
+              Add Quiz
+            </button>
       </div>
       
     </div>

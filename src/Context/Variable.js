@@ -6,6 +6,8 @@ export function Variable({ children }) {
   const baseUrl = "http://192.168.114.101:3500/api";
   const appName = "E-Learning App";
 
+  
+
   return (
     <VariableContext.Provider value={{ baseUrl, appName }}>
       {children}
@@ -13,4 +15,4 @@ export function Variable({ children }) {
   );
 }
 
-//192.168.114.101
+//192.168.43.167

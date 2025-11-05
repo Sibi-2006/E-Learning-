@@ -124,3 +124,14 @@ html{
 .css-sub{
     @apply text-blue-300
 }
+
+.javascript-title{
+    @apply text-yellow-400;
+    text-shadow: 2px 2px 5px rgb(232, 255, 138);
+}
+.javascript-font{
+    @apply text-yellow-400;
+}
+.javascript-sub{
+    @apply text-yellow-300
+}

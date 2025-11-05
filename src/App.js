@@ -7,6 +7,7 @@ import AdminLogin from "./Adminpage/AdminLogin";
 import AdminHome from "./Adminpage/AdminHome";
 import Html from "./Adminpage/Html";
 import HtmlCourse from "./Components/Course/HtmlCourse";
+import AddQuiz from "./Adminpage/AddQuiz";
 function App() {
   return (
     <div className="">
@@ -21,6 +22,7 @@ function App() {
           <Route path="/admin" element={ <AdminLogin />} />
           <Route path="/admin/home" element={ <AdminHome />} />
           <Route path="/admin/home/:name" element={ <Html />} />
+          <Route path="/admin/home/addquiz" element={ <AddQuiz />} /> 
 
           {/*Course */}
           <Route path="/learncourse/:coueseName" element={ <HtmlCourse/>} />

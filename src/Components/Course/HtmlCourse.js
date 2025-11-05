@@ -6,26 +6,43 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useParams } from 'react-router-dom';
 
 export default function HtmlCourse() {
-  const { coueseName } = useParams()
+  const { coueseName } = useParams();
   const [order, setOrder] = useState(1); 
   const { baseUrl } = useContext(VariableContext);
   const [lesson, setLesson] = useState({});
   const [copied, setCopied] = useState(false);
   const [quizResult, setQuizResult] = useState("");
-  
+  const [maxOrder, setMaxOrder] = useState(null);
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  // ✅ Fetch lesson by order
   useEffect(() => {
     const fetchLesson = async () => {
       try {
-        const couse = coueseName.toLowerCase();
-        const res = await axios.get(`${baseUrl}/addcourse/course/${couse}/lessons/${order}`);
+        const course = coueseName.toLowerCase();
+        const res = await axios.get(`${baseUrl}/addcourse/course/${course}/lessons/${order}`);
         setLesson(res.data.lesson);
-        setQuizResult("")
+        setQuizResult("");
       } catch (err) {
         console.log(err.message);
       }
     };
-    fetchLesson();
-  }, [baseUrl, order]);
+    if (!isCompleted) fetchLesson();
+  }, [baseUrl, order, isCompleted]);
+
+  // ✅ Fetch Max Order once
+  useEffect(() => {
+    const fetchMaxOrder = async () => {
+      try {
+        const course = coueseName.toLowerCase();
+        const res = await axios.get(`${baseUrl}/addcourse/course/${course}/lessons/maxorder`);
+        setMaxOrder(res.data.Max_order);
+      } catch (err) {
+        console.log("from getMaxOrder:", err.message);
+      }
+    };
+    fetchMaxOrder();
+  }, [baseUrl, coueseName]);
 
   const handleCopy = () => {
     if (!lesson.codeExample) return;
@@ -45,26 +62,44 @@ export default function HtmlCourse() {
   };
 
   const nextLesson = () => {
-  setOrder(prev => prev + 1);
-  window.scrollTo({ top: 0, behavior: "smooth" }); 
-};
+    if (order >= maxOrder) {
+      setIsCompleted(true);
+      return;
+    }
+    setOrder(prev => prev + 1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-const prevLesson = () => {
-  if (order > 1) {
-    setOrder(prev => prev - 1);
-    window.scrollTo({ top: 0, behavior: "smooth" }); 
+  const prevLesson = () => {
+    if (order > 1) {
+      setOrder(prev => prev - 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  // ✅ If course is completed
+  if (isCompleted) {
+    return (
+      <div className="flex flex-col items-start justify-start pl-6 pt-20 w-full text-white">
+        <h1 className="text-5xl font-bold">🎉 Congratulations!</h1>
+        <h3 className="text-2xl mt-3">
+          You’ve completed the <span className={`${coueseName.toLowerCase()}-title font-bold`}>
+            {coueseName.toUpperCase()}
+          </span> course!
+        </h3>
+        <p className="mt-4 text-gray-400 text-lg">Keep learning and building projects bro 🚀</p>
+      </div>
+    );
   }
-};
 
-
+  // ✅ Main Lesson Page
   return (
     <div className="flex flex-col items-start justify-start pl-6 pt-20 w-full text-white">
-      {/* Title */}
       <h1 className="text-5xl md:text-6xl mb-2">
         Learn <span className={`${coueseName.toLowerCase()}-title font-bold`}>{coueseName.toUpperCase()}</span>
       </h1>
       <h2 className="text-2xl mb-1">
-        Lesson - {order} : <span className={` font-bold ${coueseName.toLowerCase()}-font`}>{lesson.title}</span>
+        Lesson - {order} : <span className={`font-bold ${coueseName.toLowerCase()}-font`}>{lesson.title}</span>
       </h2>
       <h3 className="text-gray-400 mb-4">
         Level - <span className="text-white">{lesson.level}</span>
@@ -72,13 +107,13 @@ const prevLesson = () => {
 
       {/* Description */}
       <div className="mt-4">
-        <h1 className={`text-xl font-semibold ${coueseName.toLowerCase()}-sub `}>Description :</h1>
+        <h1 className={`text-xl font-semibold ${coueseName.toLowerCase()}-sub`}>Description :</h1>
         <p className="text-gray-300">{lesson.description}</p>
       </div>
 
       {/* Key Points */}
       <div className="mt-4">
-        <h1  className={`text-xl font-semibold ${coueseName.toLowerCase()}-sub `}>Key Points :</h1>
+        <h1 className={`text-xl font-semibold ${coueseName.toLowerCase()}-sub`}>Key Points :</h1>
         <ul className="list-disc pl-6 space-y-2 text-gray-300">
           {lesson.points?.map((point, index) => (
             <li key={index}>{point}</li>
@@ -88,7 +123,7 @@ const prevLesson = () => {
 
       {/* Code Example */}
       <div className="mt-6 w-11/12 md:w-3/4 relative">
-        <h1  className={`text-xl font-semibold ${coueseName.toLowerCase()}-sub `}>Example Code :</h1>
+        <h1 className={`text-xl font-semibold ${coueseName.toLowerCase()}-sub`}>Example Code :</h1>
         {lesson.codeExample && (
           <div className="relative">
             <button
@@ -114,27 +149,25 @@ const prevLesson = () => {
         )}
       </div>
 
-      {/* (Optional) Live Preview */}
-      
+      {/* Live Output */}
       <div className="mt-6 w-11/12 md:w-3/4">
-        <h1  className={`text-xl font-semibold ${coueseName.toLowerCase()}-sub `}>Live Output :</h1>
+        <h1 className={`text-xl font-semibold ${coueseName.toLowerCase()}-sub`}>Live Output :</h1>
         <iframe
           title="HTML Output"
           srcDoc={lesson.codeExample}
           className="w-full min-h-[200px] border border-gray-700 rounded-lg bg-gray-400"
         />
       </div>
-     
 
       {/* Explanation */}
       <div className="mt-6">
-        <h1  className={`text-xl font-semibold ${coueseName.toLowerCase()}-sub `}>Explanation :</h1>
+        <h1 className={`text-xl font-semibold ${coueseName.toLowerCase()}-sub`}>Explanation :</h1>
         <p className="text-gray-300">{lesson.explanation}</p>
       </div>
 
-      {/* Quiz Section */}
+      {/* Quiz */}
       <div className="mt-6">
-        <h1  className={`text-xl font-semibold ${coueseName.toLowerCase()}-sub `}>Quiz :</h1>
+        <h1 className={`text-xl font-semibold ${coueseName.toLowerCase()}-sub`}>Quiz :</h1>
         <h2 className="text-lg mb-2 text-gray-200">{lesson.quiz?.quizQuestion}</h2>
         <div className="flex flex-col gap-2">
           <button onClick={() => checkAnswer("A")} className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg text-left">
@@ -152,13 +185,11 @@ const prevLesson = () => {
         </div>
 
         {quizResult && (
-          <p className="mt-3 text-lg font-semibold">
-            {quizResult}
-          </p>
+          <p className="mt-3 text-lg font-semibold">{quizResult}</p>
         )}
       </div>
 
-      {/* Navigation Buttons */}
+      {/* Navigation */}
       <div className="flex gap-4 mt-6">
         <button 
           onClick={prevLesson} 
