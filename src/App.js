@@ -9,6 +9,9 @@ import Html from "./Adminpage/Html";
 import HtmlCourse from "./Components/Course/HtmlCourse";
 import AddQuiz from "./Adminpage/AddQuiz";
 import Quiz from "./Components/Quiz";
+import AllQuiz from "./Components/Course/AllQuiz";
+import MernHome from "./Components/Course/MernHome";
+import AllMern from "./Adminpage/AllMern";
 function App() {
   return (
     <div className="">
@@ -23,11 +26,15 @@ function App() {
           <Route path="/admin" element={ <AdminLogin />} />
           <Route path="/admin/home" element={ <AdminHome />} />
           <Route path="/admin/home/:name" element={ <Html />} />
+          <Route path="/admin/home/mern" element={<AllMern/>}/>
           <Route path="/admin/home/addquiz" element={ <AddQuiz />} /> 
 
           {/*Course */}
           <Route path="/learncourse/:coueseName" element={ <HtmlCourse/>} />
-          <Route path="/quiz" element={ <Quiz />} />
+          <Route path="/learncourse/in/mern/:coueseName" element={ <HtmlCourse/>} />
+          <Route path="/learncourse/quiz" element={ <AllQuiz />} />
+          <Route path="/learncourse/mern" element={ <MernHome/>} />
+          <Route path="/quiz/:quizName" element={ <Quiz />} />
         </Routes>
       </BrowserRouter>
     </div>

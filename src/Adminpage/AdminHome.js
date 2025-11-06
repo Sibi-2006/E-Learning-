@@ -26,6 +26,7 @@ export default function AdminHome() {
            >JS</button>
           <button
              className='mern-btn w-1/2'
+               onClick={()=>navigate(`/admin/home/mern`)}
             >MERN</button>
 
             <button
@@ -38,3 +39,4 @@ export default function AdminHome() {
     </div>
   )
 }
+///admin/home/mern

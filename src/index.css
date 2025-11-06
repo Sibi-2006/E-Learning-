@@ -47,7 +47,7 @@ html{
     box-shadow: 3px 3px 10px orangered;
 }
 .html-btn{
-    @apply bg-orange-500 my-3 px-4 py-2 border-dark border-2 text-orange-950 rounded-xl ;
+    @apply bg-orange-500 mb-2 px-4 py-2 border-dark border-2 text-orange-950 rounded-xl ;
 }.html-btn:hover,:focus{
     @apply bg-black border-orange-500 text-orange-500;
 }
@@ -88,6 +88,59 @@ html{
 }
 .mern-btn:hover,:focus{
     @apply bg-black text-green-400 border-green-400;
+}
+
+.quiz-con{
+    @apply text-violet-600 border-violet-600;
+    box-shadow: 3px 3px 10px rgb(183, 96, 250);
+}
+.quiz-btn{
+    @apply bg-violet-600 text-blue-950 py-2 px-4 rounded-xl my-3 border-dark border-2;
+}.quiz-btn:hover,:focus{
+    @apply bg-black border-violet-600 text-violet-600;
+}
+
+.mongo-con{
+    @apply text-green-400 border-2 border-green-400;
+    box-shadow: 3px 3px 10px rgb(74 222 128);
+}
+.mongo-btn{
+    @apply bg-green-400 text-green-950 my-3 py-2 px-4 rounded-xl border-2 border-dark;
+}
+.mongo-btn:hover,:focus{
+    @apply bg-black text-green-400 border-green-400;
+}
+
+.express-con{
+    @apply text-yellow-600 border-yellow-600 border-2;
+    box-shadow: 3px 3px 10px rgb(250, 201, 3);
+}
+.express-btn{
+    @apply bg-yellow-600 text-yellow-900 py-2 px-4 rounded-xl my-3 border-dark border-2;
+}
+.express-btn:hover,:focus{
+    @apply bg-black border-yellow-600 text-yellow-400;
+}
+
+.react-con{
+    @apply text-blue-600 border-blue-600;
+    box-shadow: 3px 3px 10px rgb(96 165 250);
+}
+.react-btn{
+    @apply bg-blue-600 text-blue-950 py-2 px-4 rounded-xl my-3 border-dark border-2;
+}.react-btn:hover,:focus{
+    @apply bg-black border-blue-600 text-blue-600;
+}
+
+
+.node-con{
+    @apply  text-orange-300  border-orange-300 ;
+    box-shadow: 3px 3px 10px orangered;
+}
+.node-btn{
+    @apply bg-orange-300 mb-2 px-4 py-2 border-dark border-2 text-orange-950 rounded-xl ;
+}.node-btn:hover,:focus{
+    @apply bg-black border-orange-300 text-orange-300;
 }
 
 /* lessons*/
@@ -136,7 +189,57 @@ html{
     @apply text-yellow-300
 }
 
+
+.mongo-title{
+    @apply text-green-400;
+    text-shadow: 2px 2px 5px rgb(81, 255, 127);
+}
+.mongo-font{
+    @apply text-green-400;
+}
+.mongo-sub{
+    @apply text-green-300
+}
+
+.express-title{
+    @apply text-yellow-600;
+    text-shadow: 2px 2px 5px rgb(255, 170, 11);
+}
+.express-font{
+    @apply text-yellow-600;
+}
+.express-sub{
+    @apply text-yellow-600
+}
+
+.node-title{
+    @apply text-yellow-300;
+    text-shadow: 2px 2px 5px rgb(255, 201, 100);
+}
+.node-font{
+    @apply text-yellow-300;
+}
+.node-sub{
+    @apply text-yellow-300
+}
+
+.react-title{
+    @apply text-blue-600;
+    text-shadow: 2px 2px 5px rgb(51, 55, 252);
+}
+.react-font{
+    @apply text-blue-600;
+}
+.react-sub{
+    @apply text-blue-600
+}
+
+
 .btn{
     @apply bg-blue-500 text-white p-2 rounded hover:bg-blue-600;
 
+}
+
+.allquiz-btn{
+    @apply my-3 py-2 px-4 rounded-xl border-2 border-dark;
 }

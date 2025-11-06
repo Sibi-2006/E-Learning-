@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { VariableContext } from "../Context/Variable";
 import axios from "axios";
+import { setToken , SetUser} from "../storage";
 
 export default function Log_in() {
   const navigate = useNavigate();
@@ -47,19 +48,18 @@ export default function Log_in() {
     if (!isValidElement()) return;
 
     try {
-      // ✅ use correct endpoint
+      
       const res = await axios.post(`${baseUrl}/login`, user);
       console.log(res.data);
 
-      // ✅ store token for session
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      setToken(res.data.token);
+      SetUser(res.data.user);
 
-      setServerMsg(res.data.message); // like "Login successful"
+      setServerMsg(res.data.message); 
       setUser({ email: "", password: "" });
 
-      // ✅ redirect after 1 sec
-      setTimeout(() => navigate("/dashboard"), 1000);
+      
+      setTimeout(() => navigate("/"), 1000);
     } catch (err) {
       console.error(err.response?.data || err.message);
       setServerMsg(err.response?.data?.message || "Login failed ❌");

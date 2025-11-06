@@ -3,6 +3,7 @@ import HTML from "./images/htmlImg.png"
 import CSS from "./images/cssImg.png"
 import JS from "./images/jsImg.png"
 import MERN from "./images/MERN.webp"
+import Quiz from "./images/quiz.avif"
 import { useNavigate } from 'react-router-dom'
 const courses = [
   { 
@@ -32,7 +33,15 @@ const courses = [
     desc:"MERN stands for MongoDB, Express, React, and Node.js — a powerful JavaScript stack used to build full-stack web applications from front-end to back-end.",
     style:"border-2 shadow-md border-green-400 shadow-green-400",
     reverse:true
+  },
+  {
+    title:"QUIZ",
+    img:Quiz,
+    desc:"Challenge yourself with HTML, CSS, JavaScript, and MERN quizzes. Learn, practice, and master web development step by step!",
+    style:"border-2 shadow-md border-violet-600 shadow-violet-600",
+    reverse:false
   }
+
 ];
 
 export default function AllCourse() {

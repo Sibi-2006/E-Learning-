@@ -4,9 +4,10 @@ import axios from 'axios';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useParams } from 'react-router-dom';
+import { getUser } from '../../storage';
 
 export default function HtmlCourse() {
-  const { coueseName } = useParams();
+  const { coueseName } = useParams(); // typo in your param but keeping same
   const [order, setOrder] = useState(1); 
   const { baseUrl } = useContext(VariableContext);
   const [lesson, setLesson] = useState({});
@@ -14,6 +15,8 @@ export default function HtmlCourse() {
   const [quizResult, setQuizResult] = useState("");
   const [maxOrder, setMaxOrder] = useState(null);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+  const [userId, setUserId] = useState("");
 
   // ✅ Fetch lesson by order
   useEffect(() => {
@@ -23,6 +26,7 @@ export default function HtmlCourse() {
         const res = await axios.get(`${baseUrl}/addcourse/course/${course}/lessons/${order}`);
         setLesson(res.data.lesson);
         setQuizResult("");
+        setIsCorrect(false);
       } catch (err) {
         console.log(err.message);
       }
@@ -44,6 +48,13 @@ export default function HtmlCourse() {
     fetchMaxOrder();
   }, [baseUrl, coueseName]);
 
+  // ✅ Get user info from localStorage
+  useEffect(() => {
+    const localUser = getUser();
+    if (localUser?.id) setUserId(localUser.id);
+  }, []);
+
+  // ✅ Copy Code
   const handleCopy = () => {
     if (!lesson.codeExample) return;
     navigator.clipboard.writeText(lesson.codeExample);
@@ -51,25 +62,45 @@ export default function HtmlCourse() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // ✅ Quiz check
   const checkAnswer = (option) => {
     if (!lesson.quiz) return;
     const correctAnswer = lesson.quiz.correctAnswer;
     if (option === correctAnswer) {
       setQuizResult("✅ Correct Answer! Great job bro 💪");
+      setIsCorrect(true);
     } else {
       setQuizResult("❌ Wrong Answer! Try again bro 😅");
     }
   };
 
-  const nextLesson = () => {
+  // ✅ Next Lesson + Update Progress
+  const nextLesson = async () => {
     if (order >= maxOrder) {
       setIsCompleted(true);
       return;
     }
-    setOrder(prev => prev + 1);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    try {
+      const course = coueseName.toLowerCase();
+      const completed = order;
+      const total = maxOrder;
+
+      if (userId) {
+        await axios.put(`${baseUrl}/progress/${userId}/${course}`, {
+          completedLessons: completed,
+          totalLessons: total,
+        });
+      }
+
+      setOrder(prev => prev + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err) {
+      console.log("update progress error:", err);
+    }
   };
 
+  // ✅ Previous Lesson
   const prevLesson = () => {
     if (order > 1) {
       setOrder(prev => prev - 1);
@@ -77,7 +108,7 @@ export default function HtmlCourse() {
     }
   };
 
-  // ✅ If course is completed
+  // ✅ Completed Course View
   if (isCompleted) {
     return (
       <div className="flex flex-col items-start justify-start pl-6 pt-20 w-full text-white">
@@ -170,24 +201,23 @@ export default function HtmlCourse() {
         <h1 className={`text-xl font-semibold ${coueseName.toLowerCase()}-sub`}>Quiz :</h1>
         <h2 className="text-lg mb-2 text-gray-200">{lesson.quiz?.quizQuestion}</h2>
         <div className="flex flex-col gap-2">
-          <button onClick={() => checkAnswer("A")} className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg text-left">
-            A - {lesson.quiz?.quizOptionA}
-          </button>
-          <button onClick={() => checkAnswer("B")} className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg text-left">
-            B - {lesson.quiz?.quizOptionB}
-          </button>
-          <button onClick={() => checkAnswer("C")} className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg text-left">
-            C - {lesson.quiz?.quizOptionC}
-          </button>
-          <button onClick={() => checkAnswer("D")} className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg text-left">
-            D - {lesson.quiz?.quizOptionD}
-          </button>
+          {["A", "B", "C", "D"].map((opt) => (
+            <button
+              key={opt}
+              onClick={() => checkAnswer(opt)}
+              className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg text-left"
+            >
+              {opt} - {lesson.quiz?.[`quizOption${opt}`]}
+            </button>
+          ))}
         </div>
 
         {quizResult && (
           <p className="mt-3 text-lg font-semibold">{quizResult}</p>
         )}
       </div>
+
+      <p className="mt-4">"Hit the correct answer 🎯 to move on!"</p>
 
       {/* Navigation */}
       <div className="flex gap-4 mt-6">
@@ -202,6 +232,7 @@ export default function HtmlCourse() {
         <button 
           onClick={nextLesson} 
           className={`${coueseName.toLowerCase()}-btn`}
+          disabled={!isCorrect}
         >
           Next
         </button>

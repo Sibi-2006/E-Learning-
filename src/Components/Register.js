@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { VariableContext } from "../Context/Variable"
 import axios from 'axios'
+import { setToken , SetUser} from '../storage'
 
 export default function Register() {
 
@@ -53,7 +54,10 @@ export default function Register() {
     try {
       const res = await axios.post(`${baseUrl}/register`, user);
       setServerError(res.data.message);
+      setToken(res.data.token);
+      SetUser(res.data.user)
       setUser({ name: "", email: "", password: "" });
+       setTimeout(() => navigate("/"), 1000);
     } catch (err) {
       console.log(err.message);
       setServerError(err.response?.data?.message || "Server error occurred!");

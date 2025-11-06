@@ -1,9 +1,22 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import{ VariableContext } from "../Context/Variable"
 import { useNavigate } from 'react-router-dom';
+import { getUser } from '../storage';
 export default function Header() {
   const { appName } = useContext(VariableContext);
   const navigate = useNavigate();
+  const [ user, setUser] = useState([]);
+  const [ userId , setUserId ] = useState("");
+  useEffect(()=>{
+    const setLocalData = ()=>{
+      const local_user = getUser();
+      setUser(local_user)
+      setUserId(local_user.id);
+    }
+    setLocalData();
+  },[]);
+
+
   return (
     <div className=' fixed top-0 w-full'>
       <nav className=' bg-primary py-3 px-3 flex flex-row justify-between items-center '>
@@ -15,12 +28,14 @@ export default function Header() {
                 {appName}
             </h1>
         </div>
-            
-        <button className=' primary-btn'
-        onClick={()=>navigate('/register')}
-        >
-                register
-        </button>
+          {
+            !userId?(<button className=' primary-btn'
+          onClick={()=>navigate('/register')}
+          >
+                  register
+          </button>) : <p>profile</p>
+          }
+        
       </nav>
     </div>
   )
