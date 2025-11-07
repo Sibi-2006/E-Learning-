@@ -6,7 +6,7 @@ import react from "../../images/react.png";
 import { useNavigate } from "react-router-dom"
 const courses = [
   { 
-    title: "MONGO", 
+    title: "MONGODB", 
     img: mongo, 
     desc: "MongoDB is a NoSQL database that stores data in flexible JSON-like documents instead of tables.It’s great for scalability, speed, and handling unstructured data — perfect for modern web apps. 🚀",
     style: "shadow-md shadow-green-500 border-2 border-green-500",

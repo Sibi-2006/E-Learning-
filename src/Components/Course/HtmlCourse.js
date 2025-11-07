@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { getUser } from '../../storage';
 
 export default function HtmlCourse() {
-  const { coueseName } = useParams(); // typo in your param but keeping same
+  const { coueseName } = useParams(); // keep same as your param
   const [order, setOrder] = useState(1); 
   const { baseUrl } = useContext(VariableContext);
   const [lesson, setLesson] = useState({});
@@ -17,12 +17,14 @@ export default function HtmlCourse() {
   const [isCompleted, setIsCompleted] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [userId, setUserId] = useState("");
+  const [isNotMern, setIsNotMern] = useState(true);
+
+  const course = coueseName.toLowerCase();
 
   // ✅ Fetch lesson by order
   useEffect(() => {
     const fetchLesson = async () => {
       try {
-        const course = coueseName.toLowerCase();
         const res = await axios.get(`${baseUrl}/addcourse/course/${course}/lessons/${order}`);
         setLesson(res.data.lesson);
         setQuizResult("");
@@ -32,13 +34,12 @@ export default function HtmlCourse() {
       }
     };
     if (!isCompleted) fetchLesson();
-  }, [baseUrl, order, isCompleted]);
+  }, [baseUrl, course, order, isCompleted]);
 
   // ✅ Fetch Max Order once
   useEffect(() => {
     const fetchMaxOrder = async () => {
       try {
-        const course = coueseName.toLowerCase();
         const res = await axios.get(`${baseUrl}/addcourse/course/${course}/lessons/maxorder`);
         setMaxOrder(res.data.Max_order);
       } catch (err) {
@@ -46,13 +47,22 @@ export default function HtmlCourse() {
       }
     };
     fetchMaxOrder();
-  }, [baseUrl, coueseName]);
+  }, [baseUrl, course]);
 
   // ✅ Get user info from localStorage
   useEffect(() => {
     const localUser = getUser();
     if (localUser?.id) setUserId(localUser.id);
   }, []);
+
+  // ✅ Fix isNotMern logic
+  useEffect(() => {
+    if (["mongodb", "react", "node", "express"].includes(course)) {
+      setIsNotMern(false);
+    } else {
+      setIsNotMern(true);
+    }
+  }, [course]);
 
   // ✅ Copy Code
   const handleCopy = () => {
@@ -82,17 +92,12 @@ export default function HtmlCourse() {
     }
 
     try {
-      const course = coueseName.toLowerCase();
-      const completed = order;
-      const total = maxOrder;
-
       if (userId) {
         await axios.put(`${baseUrl}/progress/${userId}/${course}`, {
-          completedLessons: completed,
-          totalLessons: total,
+          completedLessons: order,
+          totalLessons: maxOrder,
         });
       }
-
       setOrder(prev => prev + 1);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
@@ -181,14 +186,16 @@ export default function HtmlCourse() {
       </div>
 
       {/* Live Output */}
-      <div className="mt-6 w-11/12 md:w-3/4">
-        <h1 className={`text-xl font-semibold ${coueseName.toLowerCase()}-sub`}>Live Output :</h1>
-        <iframe
-          title="HTML Output"
-          srcDoc={lesson.codeExample}
-          className="w-full min-h-[200px] border border-gray-700 rounded-lg bg-gray-400"
-        />
-      </div>
+      {isNotMern && lesson.codeExample && (
+        <div className="mt-6 w-11/12 md:w-3/4">
+          <h1 className={`text-xl font-semibold ${coueseName.toLowerCase()}-sub`}>Live Output :</h1>
+          <iframe
+            title="HTML Output"
+            srcDoc={lesson.codeExample}
+            className="w-full min-h-[200px] border border-gray-700 rounded-lg bg-gray-400"
+          />
+        </div>
+      )}
 
       {/* Explanation */}
       <div className="mt-6">
@@ -201,20 +208,17 @@ export default function HtmlCourse() {
         <h1 className={`text-xl font-semibold ${coueseName.toLowerCase()}-sub`}>Quiz :</h1>
         <h2 className="text-lg mb-2 text-gray-200">{lesson.quiz?.quizQuestion}</h2>
         <div className="flex flex-col gap-2">
-          {["A", "B", "C", "D"].map((opt) => (
+          {["A","B","C","D"].map((opt) => (
             <button
               key={opt}
               onClick={() => checkAnswer(opt)}
-              className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg text-left"
+              className={`bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg text-left`}
             >
               {opt} - {lesson.quiz?.[`quizOption${opt}`]}
             </button>
           ))}
         </div>
-
-        {quizResult && (
-          <p className="mt-3 text-lg font-semibold">{quizResult}</p>
-        )}
+        {quizResult && <p className="mt-3 text-lg font-semibold">{quizResult}</p>}
       </div>
 
       <p className="mt-4">"Hit the correct answer 🎯 to move on!"</p>
@@ -231,8 +235,8 @@ export default function HtmlCourse() {
 
         <button 
           onClick={nextLesson} 
-          className={`${coueseName.toLowerCase()}-btn`}
           disabled={!isCorrect}
+          className={`${coueseName.toLowerCase()}-btn`}
         >
           Next
         </button>

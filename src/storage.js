@@ -13,3 +13,8 @@ export const getUser = () => {
   const storedUser = localStorage.getItem("user");
   return storedUser ? JSON.parse(storedUser) : null;
 };
+
+export const clearStorage = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+};

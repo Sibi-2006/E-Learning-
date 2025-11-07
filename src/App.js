@@ -12,6 +12,8 @@ import Quiz from "./Components/Quiz";
 import AllQuiz from "./Components/Course/AllQuiz";
 import MernHome from "./Components/Course/MernHome";
 import AllMern from "./Adminpage/AllMern";
+import Profile from "./Components/Profile";
+import Footer from "./Components/Footer";
 function App() {
   return (
     <div className="">
@@ -21,6 +23,7 @@ function App() {
           <Route path="/" element={ <Home />} />
           <Route path="/login" element={ <Log_in/> }/>
           <Route path="/register" element={ <Register />} />
+          <Route path="/profile/:id" element={ <Profile/>} />
 
           {/*For Admin  */}
           <Route path="/admin" element={ <AdminLogin />} />
@@ -36,6 +39,7 @@ function App() {
           <Route path="/learncourse/mern" element={ <MernHome/>} />
           <Route path="/quiz/:quizName" element={ <Quiz />} />
         </Routes>
+        <Footer/>
       </BrowserRouter>
     </div>
   );
