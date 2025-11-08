@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { VariableContext } from "../Context/Variable";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Quiz() {
     const { quizName } = useParams();
     const { baseUrl } = useContext(VariableContext);
-
+    const navigate = useNavigate()
     const [quizs, setQuiz] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [message, setMessage] = useState("");
@@ -34,11 +34,26 @@ export default function Quiz() {
     }, [baseUrl, quizName]);
 
     if (quizs.length === 0) return <p>Loading...</p>;
+    //
     if (currentIndex >= quizs.length){
         return(
-            <div className="flex flex-col items-center justify-center min-h-screen gap-6">
-                <h2>{quizName.toUpperCase()} Completed! ✅</h2>
-                <h1>Quiz</h1>
+            <div className="flex flex-col items-center justify-center min-h-screen gap-6 border-2 border-black rounded-2xl bg-slate-500 p-3 ">
+                <h1 className="text-5xl font-bold">🎉 Congratulations!</h1>
+                <h2> You Completed! <samp className={`${quizName.toLowerCase()}-font text-4xl font-bold`}>{quizName.toUpperCase()}</samp> -  Quiz</h2>
+                <div className=" flex items-center justify-center flex-col border-2 border-white bg-gray-900 gap-4 rounded-xl p-3">
+                        <p className="text-white font-bold">Score</p>
+                        <h5 className="text-green-500">
+                            Correct: <samp className="font-bold text-white">{score.correct}</samp>
+                        </h5>
+                        <h5 className="text-red-500">
+                            Wrong: <samp className="font-bold text-white">{score.wrong}</samp>
+                        </h5>
+                    </div>
+                <p>keep Learning with our E-Learning App</p>
+                <button
+                    onClick={()=>navigate('/')}
+                    className={`${quizName.toLowerCase()}-btn`}
+                >Home</button>
             </div>
         )   
     } 

@@ -3,7 +3,7 @@ import { VariableContext } from "../../Context/Variable";
 import axios from 'axios';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getUser } from '../../storage';
 
 export default function HtmlCourse() {
@@ -18,36 +18,56 @@ export default function HtmlCourse() {
   const [isCorrect, setIsCorrect] = useState(false);
   const [userId, setUserId] = useState("");
   const [isNotMern, setIsNotMern] = useState(true);
-
+  const navigate = useNavigate()
   const course = coueseName.toLowerCase();
+  const [loading, setLoading] = useState(true);
 
-  // ✅ Fetch lesson by order
+  
   useEffect(() => {
-    const fetchLesson = async () => {
-      try {
-        const res = await axios.get(`${baseUrl}/addcourse/course/${course}/lessons/${order}`);
-        setLesson(res.data.lesson);
-        setQuizResult("");
-        setIsCorrect(false);
-      } catch (err) {
-        console.log(err.message);
-      }
-    };
-    if (!isCompleted) fetchLesson();
-  }, [baseUrl, course, order, isCompleted]);
+  const fetchLesson = async () => {
+    try {
+      setLoading(true); // start loading
+      const res = await axios.get(`${baseUrl}/addcourse/course/${course}/lessons/${order}`);
+      setLesson(res.data.lesson);
+      setQuizResult("");
+      setIsCorrect(false);
+    } catch (err) {
+      console.log(err.message);
+    } finally {
+      setLoading(false); // stop loading
+    }
+  };
+  if (!isCompleted) fetchLesson();
+}, [baseUrl, course, order, isCompleted]);
 
-  // ✅ Fetch Max Order once
+
   useEffect(() => {
-    const fetchMaxOrder = async () => {
-      try {
-        const res = await axios.get(`${baseUrl}/addcourse/course/${course}/lessons/maxorder`);
-        setMaxOrder(res.data.Max_order);
-      } catch (err) {
-        console.log("from getMaxOrder:", err.message);
-      }
-    };
-    fetchMaxOrder();
-  }, [baseUrl, course]);
+  const fetchMaxOrder = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${baseUrl}/addcourse/course/${course}/lessons/maxorder`);
+      setMaxOrder(res.data.Max_order);
+    } catch (err) {
+      console.log("from getMaxOrder:", err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchMaxOrder();
+}, [baseUrl, course]);
+
+if (loading) {
+  return (
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-800 text-white px-4 text-center">
+      <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500 mb-6"></div>
+      <p className="text-xl mb-2">Loading lesson...</p>
+      <p className="text-gray-300">
+        ⚡ Hey bro, I use Render free version, so it might take 10–20 seconds to wake up the server. Thanks for your patience! 🚀
+      </p>
+    </div>
+  );
+}
+
 
   // ✅ Get user info from localStorage
   useEffect(() => {
@@ -116,7 +136,7 @@ export default function HtmlCourse() {
   // ✅ Completed Course View
   if (isCompleted) {
     return (
-      <div className="flex flex-col items-start justify-start pl-6 pt-20 w-full text-white">
+      <div className="flex flex-col items-center justify-center pl-6 pt-20 w-full text-white bg-gray-800 min-h-screen">
         <h1 className="text-5xl font-bold">🎉 Congratulations!</h1>
         <h3 className="text-2xl mt-3">
           You’ve completed the <span className={`${coueseName.toLowerCase()}-title font-bold`}>
@@ -124,6 +144,10 @@ export default function HtmlCourse() {
           </span> course!
         </h3>
         <p className="mt-4 text-gray-400 text-lg">Keep learning and building projects bro 🚀</p>
+        <h2>Test your skill whith ↓</h2>
+        <button className={`${course}-btn my-3 w-3/4 md:w-1/5`}
+                onClick={()=>navigate(`/quiz/${course}`)}
+                >Quiz </button>
       </div>
     );
   }
