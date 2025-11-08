@@ -31,6 +31,7 @@ export default function AdminHome() {
 
             <button
               className='css-btn w-1/2'
+              onClick={()=>navigate(`/admin/home/addquiz`)}
             >
               Add Quiz
             </button>

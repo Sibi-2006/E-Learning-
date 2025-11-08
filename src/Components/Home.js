@@ -12,7 +12,7 @@ export default function Home() {
         <h1 className="home-title mb-6">{appName}</h1>
         <p className="text-secondaryText max-w-3xl leading-relaxed">
           🚀 E-Learning App — a free platform that teaches HTML, CSS, JavaScript, and MERN stack step by step. <br />
-          📘 Includes interactive lessons, sample codes, and downloadable PDFs for each topic. <br />
+          📘 Includes interactive lessons, sample codes etc..... <br />
           💡 Designed to help beginners become full-stack developers easily and effectively.
         </p>
       </section>

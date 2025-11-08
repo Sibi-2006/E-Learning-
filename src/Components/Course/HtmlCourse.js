@@ -56,6 +56,21 @@ export default function HtmlCourse() {
   fetchMaxOrder();
 }, [baseUrl, course]);
 
+// ✅ Hooks go first
+useEffect(() => {
+  const localUser = getUser();
+  if (localUser?.id) setUserId(localUser.id);
+}, []);
+
+useEffect(() => {
+  if (["mongodb", "react", "node", "express"].includes(course)) {
+    setIsNotMern(false);
+  } else {
+    setIsNotMern(true);
+  }
+}, [course]);
+
+// ✅ Conditional return AFTER hooks
 if (loading) {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-800 text-white px-4 text-center">
@@ -68,21 +83,6 @@ if (loading) {
   );
 }
 
-
-  // ✅ Get user info from localStorage
-  useEffect(() => {
-    const localUser = getUser();
-    if (localUser?.id) setUserId(localUser.id);
-  }, []);
-
-  // ✅ Fix isNotMern logic
-  useEffect(() => {
-    if (["mongodb", "react", "node", "express"].includes(course)) {
-      setIsNotMern(false);
-    } else {
-      setIsNotMern(true);
-    }
-  }, [course]);
 
   // ✅ Copy Code
   const handleCopy = () => {
