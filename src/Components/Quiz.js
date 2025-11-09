@@ -18,21 +18,35 @@ export default function Quiz() {
         correct: 0,
         wrong: 0
     });
+  const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setLoading(true); 
                 const course = quizName.toLowerCase();
                 const res = await axios.get(`${baseUrl}/add/quiz/get/${course}/quiz`);
                 setQuiz(res.data.quiz);
                 setTotalQuiz(res.data.quiz.length);
             } catch (err) {
                 console.log(err.message);
+            }finally {
+                setLoading(false); // stop loading
             }
         };
         fetchData();
     }, [baseUrl, quizName]);
-
+    if (loading) {
+  return (
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-800 text-white px-4 text-center">
+      <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500 mb-6"></div>
+      <p className="text-xl mb-2">Loading lesson...</p>
+      <p className="text-gray-300">
+        ⚡ Hey bro, I use Render free version, so it might take 10–20 seconds to wake up the server. Thanks for your patience! 🚀
+      </p>
+    </div>
+  );
+}
     if (quizs.length === 0) return <p>Loading...</p>;
     //
     if (currentIndex >= quizs.length){

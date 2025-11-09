@@ -5,6 +5,20 @@
 html{
     @apply bg-dark
 }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Inter:wght@400;500&family=Fira+Code:wght@400;500&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: 'Poppins', sans-serif;
+}
+
+code, pre {
+  font-family: 'Fira Code', monospace;
+}
+
 
 /* ===== Global Scrollbar Style ===== */
 
